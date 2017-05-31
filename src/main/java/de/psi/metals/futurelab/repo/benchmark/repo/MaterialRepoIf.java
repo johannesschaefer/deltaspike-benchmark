@@ -14,6 +14,7 @@ import org.apache.deltaspike.data.api.Repository;
 import de.psi.metals.futurelab.repo.benchmark.Material;
 
 @Repository
+// @Transactional
 public interface MaterialRepoIf extends EntityRepository< Material, String >
 {
 

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -50,6 +51,7 @@ public class SaveTest
         em = emf.createEntityManager();
     }
 
+    @ApplicationScoped
     @Produces
     public EntityManager saveEntityManager()
     {
@@ -75,6 +77,7 @@ public class SaveTest
 
     }
 
+    @ApplicationScoped
     @Before
     public void warmUp()
     {
@@ -92,66 +95,77 @@ public class SaveTest
         System.out.println( "warm up " + (endTime - startTime) / 10000000000. + " sec" );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike10()
     {
         ds( 10 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike20()
     {
         ds( 20 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike40()
     {
         ds( 40 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike80()
     {
         ds( 80 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike160()
     {
         ds( 160 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike320()
     {
         ds( 320 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike640()
     {
         ds( 640 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike1280()
     {
         ds( 1280 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike2560()
     {
         ds( 2560 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike5120()
     {
         ds( 5120 );
     }
 
+    @ApplicationScoped
     @Test
     public void saveMaterialDeltaSpike10240()
     {
@@ -245,16 +259,16 @@ public class SaveTest
     {
         System.out.println( "saveMaterialEntityManager" );
         long endTime, startTime = System.nanoTime();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
         for( int i = 0; i < c; i++ )
         {
+            EntityTransaction tx = em.getTransaction();
+            tx.begin();
             Material mat = new Material();
             mat.setMaterialName( "mat-em" + i );
             mat.setGrade( "AAA" );
             em.persist( mat );
+            tx.commit();
         }
-        tx.commit();
         endTime = System.nanoTime();
         System.out.println( "save " + c + " em took " + (endTime - startTime) / 10000000000. + " sec" );
         times.put( "em " + c, (endTime - startTime) / 1000000000. );
